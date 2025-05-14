@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        body {
+            font-family:Garamond,serif;
+            background-color:beige;
+        }
+        .mat {
+            display:flex;
+            flex-direction:row;
+            gap:4px;
+        }
+        .mat_in {
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+        .mat_row {
+            display:flex;
+            flex-direction:row;
+            gap:8px;
+        }
+        .mat_item {
+            display:flex;
+        }
+        .brack {
+            font-size:35px;
+            margin-top:0px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Example</h3>
+    <hr>
+    <div class="mat">
+        <p class="brack">[</p>
+        <div class="mat_in">
+            <div class="mat_row">
+                <div class="mat_item">1</div>
+                <div class="mat_item">0</div>
+                <div class="mat_item">2</div>
+            </div>
+            <div class="mat_row">
+                <div class="mat_item">6</div>
+                <div class="mat_item">9</div>
+                <div class="mat_item">3</div>
+            </div>
+        </div>
+        <p class="brack">]</p>
+    </div>
+</body>
