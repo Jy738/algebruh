@@ -27,25 +27,60 @@
             font-size:35px;
             margin-top:0px;
         }
+        .equate {
+            display:flex;
+            flex-direction:row;
+            gap:20px;
+        }
     </style>
 </head>
 <body>
     <h3>Example</h3>
     <hr>
-    <div class="mat">
-        <p class="brack">[</p>
-        <div class="mat_in">
+    <div class="equate">
+        <div class="mat">
+            <p class="brack">[</p>
+            <div class="mat_in">
+                <div class="mat_row">
+                    <div class="mat_item">1</div>
+                    <div class="mat_item">2</div>
+                </div>
             <div class="mat_row">
-                <div class="mat_item">1</div>
-                <div class="mat_item">0</div>
-                <div class="mat_item">2</div>
-            </div>
-            <div class="mat_row">
-                <div class="mat_item">6</div>
-                <div class="mat_item">9</div>
                 <div class="mat_item">3</div>
+                <div class="mat_item">4</div>
             </div>
         </div>
-        <p class="brack">]</p>
+            <p class="brack">]</p>
+        </div>
+        <p>+</p>
+        <div class="mat">
+            <p class="brack">[</p>
+            <div class="mat_in">
+                <div class="mat_row">
+                    <div class="mat_item">4</div>
+                    <div class="mat_item">3</div>
+                </div>
+            <div class="mat_row">
+                <div class="mat_item">2</div>
+                <div class="mat_item">1</div>
+            </div>
+        </div>
+            <p class="brack">]</p>
+        </div>
+        <p>=</p>
+        <div class="mat">
+            <p class="brack">[</p>
+            <div class="mat_in">
+                <div class="mat_row">
+                    <div class="mat_item">5</div>
+                    <div class="mat_item">5</div>
+                </div>
+            <div class="mat_row">
+                <div class="mat_item">5</div>
+                <div class="mat_item">5</div>
+            </div>
+        </div>
+            <p class="brack">]</p>
+        </div>
     </div>
 </body>
