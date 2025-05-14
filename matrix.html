@@ -1,276 +1,295 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- vibe coded cus time consuming educational 9 to 5-->
-    <style>
-        body {
-            font-family:Garamond,serif;
-            background-color:beige;
-            padding: 20px;
-        }
-        .mat {
-            display:flex;
-            flex-direction:row;
-            gap:4px;
-        }
-        .mat_in {
-            display:flex;
-            flex-direction:column;
-            gap:8px;
-        }
-        .mat_row {
-            display:flex;
-            flex-direction:row;
-            gap:8px;
-        }
-        .mat_item {
-            display:flex;
-            width: 25px;
-            height: 25px;
-            justify-content: center;
-            align-items: center;
-        }
-        .brack {
-            font-size:35px;
-            margin-top:0px;
-        }
-        .equate {
-            display:flex;
-            flex-direction:row;
-            gap:20px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        input {
-            width: 25px;
-            height: 25px;
-            text-align: center;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.5);
-            font-family: Garamond, serif;
-            font-size: 16px;
-        }
-        input:focus {
-            outline: 1px solid #aaa;
-        }
-        button {
-            margin-top: 20px;
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: Garamond, serif;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .feedback {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .correct {
-            color: green;
-        }
-        .incorrect {
-            color: red;
-        }
-        .progress {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        h3 {
-            margin-bottom: 10px;
-        }
-    </style>
+  <style>
+    body {
+      font-family: Garamond, serif;
+      background-color: beige;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .mat {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+    }
+    
+    .mat_in {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .mat_row {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+    
+    .mat_item {
+      display: flex;
+      justify-content: center;
+      width: 30px;
+    }
+    
+    .brack {
+      font-size: 35px;
+      margin-top: 0px;
+    }
+    
+    .equate {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    input {
+      width: 30px;
+      border: none;
+      background-color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      font-family: Garamond, serif;
+      font-size: 16px;
+    }
+    
+    #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+    
+    .correct {
+      color: green;
+    }
+    
+    .incorrect {
+      color: red;
+    }
+    
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: Garamond, serif;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    #progress {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body>
-    <h3>Matrix Practice</h3>
-    <p>Solve the matrix problem below. Enter the correct values in the result matrix.</p>
-    <hr>
-    <div class="progress">Problem <span id="currentProblem">1</span> of 3</div>
-    <div class="equate" id="problem">
-        <!-- Problem will be inserted here -->
-    </div>
-    <div class="feedback" id="feedback"></div>
-    <button id="checkButton">Check Answer</button>
-    <button id="nextButton" style="display: none;">Next Problem</button>
 
-    <script>
-        // Track current problem and total problems
-        let currentProblem = 0;
-        const totalProblems = 3;
-        let problems = [];
-        let currentAnswer = [];
+<body>
+  <h2>Matrix Practice Problems</h2>
+  <div id="progress">Problem 1 of 4</div>
+  <div id="problem-container">
+    <div class="equate">
+      <div class="mat" id="matrix1">
+        <p class="brack">[</p>
+        <div class="mat_in" id="matrix1_in">
+          <!-- Will be filled dynamically -->
+        </div>
+        <p class="brack">]</p>
+      </div>
+      <p id="operation">+</p>
+      <div class="mat" id="matrix2">
+        <p class="brack">[</p>
+        <div class="mat_in" id="matrix2_in">
+          <!-- Will be filled dynamically -->
+        </div>
+        <p class="brack">]</p>
+      </div>
+      <p>=</p>
+      <div class="mat" id="result">
+        <p class="brack">[</p>
+        <div class="mat_in" id="result_in">
+          <!-- Will be filled dynamically -->
+        </div>
+        <p class="brack">]</p>
+      </div>
+    </div>
+  </div>
+  
+  <div id="feedback"></div>
+  <button id="check-btn">Check Answer</button>
+  
+  <script>
+    // Global variables
+    let currentProblem = 0;
+    const totalProblems = 4;
+    let currentMatrixSize = { rows: 2, cols: 2 }; // First one is always 2x2
+    let currentOperation = '+';
+    let matrix1 = [];
+    let matrix2 = [];
+    let correctAnswer = [];
+    
+    // Function to generate a random integer between min and max (inclusive)
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    // Function to create a random matrix with values less than 7
+    function createRandomMatrix(rows, cols) {
+      const matrix = [];
+      for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+          row.push(getRandomInt(1, 6)); // Values less than 7 (1-6)
+        }
+        matrix.push(row);
+      }
+      return matrix;
+    }
+    
+    // Function to perform matrix operations
+    function performMatrixOperation(m1, m2, operation) {
+      const result = [];
+      for (let i = 0; i < m1.length; i++) {
+        const row = [];
+        for (let j = 0; j < m1[0].length; j++) {
+          if (operation === '+') {
+            row.push(m1[i][j] + m2[i][j]);
+          } else {
+            row.push(m1[i][j] - m2[i][j]);
+          }
+        }
+        result.push(row);
+      }
+      return result;
+    }
+    
+    // Function to render a matrix in the DOM
+    function renderMatrix(matrix, containerId, isInput = false) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      for (let i = 0; i < matrix.length; i++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'mat_row';
         
-        // Generate a random number from 1 to 6
-        function getRandomNumber() {
-            return Math.floor(Math.random() * 6) + 1;
+        for (let j = 0; j < matrix[i].length; j++) {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'mat_item';
+          
+          if (isInput) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.dataset.row = i;
+            input.dataset.col = j;
+            input.maxLength = 2;
+            itemDiv.appendChild(input);
+          } else {
+            itemDiv.textContent = matrix[i][j];
+          }
+          
+          rowDiv.appendChild(itemDiv);
         }
         
-        // Generate a problem type (addition or subtraction)
-        function getRandomProblemType() {
-            return Math.random() > 0.5 ? '+' : '-';
-        }
+        container.appendChild(rowDiv);
+      }
+    }
+    
+    // Function to generate a new problem
+    function generateProblem() {
+      // Update progress indicator
+      document.getElementById('progress').textContent = `Problem ${currentProblem + 1} of ${totalProblems}`;
+      
+      // First problem is always 2x2, then create an even mix of 2x2 and 2x3
+      if (currentProblem === 0) {
+        currentMatrixSize = { rows: 2, cols: 2 };
+      } else if (currentProblem === 1 || currentProblem === 3) {
+        currentMatrixSize = { rows: 2, cols: 3 };
+      } else {
+        currentMatrixSize = { rows: 2, cols: 2 };
+      }
+      
+      // Randomly decide whether to add or subtract
+      currentOperation = Math.random() < 0.5 ? '+' : '-';
+      document.getElementById('operation').textContent = currentOperation;
+      
+      // Generate matrices
+      matrix1 = createRandomMatrix(currentMatrixSize.rows, currentMatrixSize.cols);
+      matrix2 = createRandomMatrix(currentMatrixSize.rows, currentMatrixSize.cols);
+      
+      // Calculate correct answer
+      correctAnswer = performMatrixOperation(matrix1, matrix2, currentOperation);
+      
+      // Render matrices
+      renderMatrix(matrix1, 'matrix1_in');
+      renderMatrix(matrix2, 'matrix2_in');
+      renderMatrix(correctAnswer, 'result_in', true); // Result is input fields
+    }
+    
+    // Function to check if the user's answer is correct
+    function checkAnswer() {
+      const inputs = document.querySelectorAll('#result_in input');
+      let isCorrect = true;
+      
+      inputs.forEach(input => {
+        const row = parseInt(input.dataset.row);
+        const col = parseInt(input.dataset.col);
+        const userValue = parseInt(input.value);
         
-        // Generate 3 random matrix problems
-        function generateProblems() {
-            const problems = [];
-            
-            for (let i = 0; i < totalProblems; i++) {
-                const matrix1 = [
-                    [getRandomNumber(), getRandomNumber()],
-                    [getRandomNumber(), getRandomNumber()]
-                ];
-                
-                const matrix2 = [
-                    [getRandomNumber(), getRandomNumber()],
-                    [getRandomNumber(), getRandomNumber()]
-                ];
-                
-                const operator = getRandomProblemType();
-                
-                // Calculate the correct answer
-                const answer = [
-                    [0, 0],
-                    [0, 0]
-                ];
-                
-                for (let r = 0; r < 2; r++) {
-                    for (let c = 0; c < 2; c++) {
-                        if (operator === '+') {
-                            answer[r][c] = matrix1[r][c] + matrix2[r][c];
-                        } else {
-                            answer[r][c] = matrix1[r][c] - matrix2[r][c];
-                        }
-                    }
-                }
-                
-                problems.push({
-                    matrix1: matrix1,
-                    matrix2: matrix2,
-                    operator: operator,
-                    answer: answer
-                });
-            }
-            
-            return problems;
+        if (isNaN(userValue) || userValue !== correctAnswer[row][col]) {
+          isCorrect = false;
+          input.style.backgroundColor = 'rgba(255, 200, 200, 0.7)';
+        } else {
+          input.style.backgroundColor = 'rgba(200, 255, 200, 0.7)';
         }
+      });
+      
+      const feedback = document.getElementById('feedback');
+      if (isCorrect) {
+        feedback.textContent = 'Correct! Great job!';
+        feedback.className = 'correct';
         
-        // Create HTML for a matrix
-        function createMatrixHTML(matrix, isAnswer = false) {
-            let html = `
-                <div class="mat">
-                    <p class="brack">[</p>
-                    <div class="mat_in">
-            `;
-            
-            for (let r = 0; r < 2; r++) {
-                html += '<div class="mat_row">';
-                for (let c = 0; c < 2; c++) {
-                    if (isAnswer) {
-                        html += `<div class="mat_item"><input type="text" id="answer_${r}_${c}" maxlength="2"/></div>`;
-                    } else {
-                        html += `<div class="mat_item">${matrix[r][c]}</div>`;
-                    }
-                }
-                html += '</div>';
-            }
-            
-            html += `
-                    </div>
-                    <p class="brack">]</p>
-                </div>
-            `;
-            
-            return html;
+        // Move to next problem or finish
+        currentProblem++;
+        if (currentProblem < totalProblems) {
+          setTimeout(() => {
+            feedback.textContent = '';
+            generateProblem();
+          }, 1500);
+        } else {
+          document.getElementById('check-btn').textContent = 'Start Again';
+          document.getElementById('check-btn').onclick = resetPractice;
+          feedback.textContent = 'Congratulations! You completed all problems!';
         }
-        
-        // Display current problem
-        function displayProblem() {
-            const problem = problems[currentProblem];
-            const problemContainer = document.getElementById('problem');
-            
-            let html = '';
-            html += createMatrixHTML(problem.matrix1);
-            html += `<p>${problem.operator}</p>`;
-            html += createMatrixHTML(problem.matrix2);
-            html += '<p>=</p>';
-            html += createMatrixHTML(null, true);
-            
-            problemContainer.innerHTML = html;
-            
-            document.getElementById('currentProblem').textContent = currentProblem + 1;
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('feedback').className = 'feedback';
-        }
-        
-        // Check the user's answer
-        function checkAnswer() {
-            const problem = problems[currentProblem];
-            const userAnswer = [
-                [
-                    parseInt(document.getElementById('answer_0_0').value) || 0,
-                    parseInt(document.getElementById('answer_0_1').value) || 0
-                ],
-                [
-                    parseInt(document.getElementById('answer_1_0').value) || 0,
-                    parseInt(document.getElementById('answer_1_1').value) || 0
-                ]
-            ];
-            
-            // Check if the answer is correct
-            let isCorrect = true;
-            for (let r = 0; r < 2; r++) {
-                for (let c = 0; c < 2; c++) {
-                    if (userAnswer[r][c] !== problem.answer[r][c]) {
-                        isCorrect = false;
-                        break;
-                    }
-                }
-                if (!isCorrect) break;
-            }
-            
-            const feedback = document.getElementById('feedback');
-            if (isCorrect) {
-                feedback.textContent = 'Correct! Great job!';
-                feedback.className = 'feedback correct';
-                
-                // Show next button if not the last problem
-                if (currentProblem < totalProblems - 1) {
-                    document.getElementById('nextButton').style.display = 'inline-block';
-                    document.getElementById('checkButton').style.display = 'none';
-                } else {
-                    feedback.textContent = 'Congratulations! You completed all problems!';
-                    document.getElementById('checkButton').style.display = 'none';
-                }
-            } else {
-                feedback.textContent = 'Not quite right. Try again!';
-                feedback.className = 'feedback incorrect';
-            }
-        }
-        
-        // Go to next problem
-        function nextProblem() {
-            currentProblem++;
-            displayProblem();
-            
-            document.getElementById('nextButton').style.display = 'none';
-            document.getElementById('checkButton').style.display = 'inline-block';
-        }
-        
-        // Initialize problems
-        function init() {
-            problems = generateProblems();
-            displayProblem();
-            
-            document.getElementById('checkButton').addEventListener('click', checkAnswer);
-            document.getElementById('nextButton').addEventListener('click', nextProblem);
-        }
-        
-        // Start the application
-        window.onload = init;
-    </script>
+      } else {
+        feedback.textContent = 'Not quite right. Try again!';
+        feedback.className = 'incorrect';
+      }
+    }
+    
+    // Function to reset the practice
+    function resetPractice() {
+      currentProblem = 0;
+      document.getElementById('check-btn').textContent = 'Check Answer';
+      document.getElementById('check-btn').onclick = checkAnswer;
+      document.getElementById('feedback').textContent = '';
+      generateProblem();
+    }
+    
+    // Initialize the first problem when the page loads
+    window.onload = function() {
+      generateProblem();
+      document.getElementById('check-btn').addEventListener('click', checkAnswer);
+    };
+  </script>
 </body>
 </html>
